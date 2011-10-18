@@ -1,9 +1,9 @@
-Syllabifier
-===========
+Syllabify
+=========
 
 A Ruby port of the [Penn Phonetic Toolkit](http://www.ling.upenn.edu/phonetics/p2tk/) (P2TK) [syllabifier](https://p2tk.svn.sourceforge.net/svnroot/p2tk/python/syllabify/). Unlike the P2TK syllabifier, this version operates on IPA transcriptions rather than Arpabet ones.
 
-Full documentation is at [RubyDoc.info](http://rubydoc.info/gems/syllabifier).
+Full documentation is at [RubyDoc.info](http://rubydoc.info/gems/syllabify).
 
 Example
 -------
