@@ -16,9 +16,9 @@ module CodyRobbins
 
     attr_reader(:language,
                 :transcription,
-                :coda_and_onset,
                 :phoneme,
                 :stress,
+                :coda_and_onset,
                 :coda,
                 :onset)
 
@@ -33,6 +33,8 @@ module CodyRobbins
     end
 
     def initialize_coda_and_onset
+      @coda = ''
+      @onset = ''
       @coda_and_onset = []
     end
 
