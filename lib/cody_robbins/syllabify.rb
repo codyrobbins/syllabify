@@ -2,14 +2,40 @@
 
 module CodyRobbins
   class Syllabify
+    # Create a new syllabified representation of an [IPA](http://en.wikipedia.org/wiki/International_Phonetic_Alphabet) transcription.
+    #
+    # @param language [Symbol, String] The [ISO 639](http://en.wikipedia.org/wiki/ISO_639) code of the language represented in the transcription. If the language has a two-letter [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1) code, use that; otherwise, use the three-letter [ISO 639-3](http://en.wikipedia.org/wiki/ISO_639-3) code. This maps to the phoneme inventory definitions in the `languages` directory.
+    # @param transcription [String] An [IPA](http://en.wikipedia.org/wiki/International_Phonetic_Alphabet) transcription to syllabify. Any phonemes represented by digraphs must be combined with a tie as discussed in the {file:README}.
+    #
+    # @example
+    #     transcription = CodyRobbins::Syllabify.new(:en, 'dɪˌsɔrgənəˈze͡ɪʃən')
+    # 
+    #     transcription.to_s      #=> 'dɪ.ˌsɔr.gə.nə.ˈze͡ɪ.ʃən'
+    #     transcription.syllables #=> [dɪ, ˌsɔr, gə, nə, ˈze͡ɪ, ʃən]
     def initialize(language, transcription)
       set_language(language)
       set_transcription(transcription)
       initialize_coda_and_onset
     end
 
+    # Render a syllabified [IPA](http://en.wikipedia.org/wiki/International_Phonetic_Alphabet) transcription of the input transcription. Syllables are delimited by the IPA syllable delimiter.
+    #
+    # @return [String]
+    #
+    # @example
+    #     CodyRobbins::Syllabify.new(:en, 'dɪˌsɔrgənəˈze͡ɪʃən').to_s #=> 'dɪ.ˌsɔr.gə.nə.ˈze͡ɪ.ʃən'
     def to_s
       syllables_as_strings.join(SYLLABLE_DELIMETER)
+    end
+
+    # Return the individual {Syllable} objects representing the transcription’s syllables.
+    #
+    # @return [Array] The {Syllable} objects representing each individual syllable.
+    #
+    # @example
+    #     CodyRobbins::Syllabify.new(:en, 'dɪˌsɔrgənəˈze͡ɪʃən').syllables #=> [dɪ, ˌsɔr, gə, nə, ˈze͡ɪ, ʃən]
+    def syllables
+      @syllables ||= build_syllables
     end
 
     protected
@@ -22,6 +48,7 @@ module CodyRobbins
                 :coda,
                 :onset)
 
+    # @private
     SYLLABLE_DELIMETER = '.'
 
     def set_language(language)
@@ -33,8 +60,6 @@ module CodyRobbins
     end
 
     def initialize_coda_and_onset
-      @coda = ''
-      @onset = ''
       @coda_and_onset = []
     end
 
@@ -43,7 +68,7 @@ module CodyRobbins
     end
 
     def join(array)
-      array.join('')
+      array.try(:join, '')
     end
 
     def phonemes
@@ -80,10 +105,6 @@ module CodyRobbins
 
     def this_file
       __FILE__
-    end
-
-    def syllables
-      @syllables ||= build_syllables
     end
 
     def build_syllables
@@ -126,7 +147,6 @@ module CodyRobbins
     end
 
     def process_phoneme
-      initialize_stress
       remove_stress_from_phoneme_if_stressed
       categorize_phoneme
     end
@@ -155,7 +175,10 @@ module CodyRobbins
       first_character_of_phoneme == SECONDARY_STRESS_MARKER
     end
 
+    # @private
     PRIMARY_STRESS_MARKER = 'ˈ'
+
+    # @private
     SECONDARY_STRESS_MARKER = 'ˌ'
 
     def first_character_of_phoneme
@@ -201,6 +224,7 @@ module CodyRobbins
       split_coda_and_onset
       append_coda_to_last_syllable_unless_no_syllables?
       append_new_syllable
+      initialize_stress
       initialize_coda_and_onset
     end
 
@@ -254,10 +278,18 @@ module CodyRobbins
     end
 
     def split_coda_and_onset_at_largest_valid_onset
-      coda_and_onset.each_with_index do |character, midpoint|
+      coda_and_onset_split_range.each do |midpoint|
         split_coda_and_onset_at(midpoint)
         break if onset_or_start_of_word?(onset)
       end
+    end
+
+    def coda_and_onset_split_range
+      0..coda_and_onset_range_length
+    end
+
+    def coda_and_onset_range_length
+      coda_and_onset.length + 1
     end
 
     def onset_or_start_of_word?(onset)
@@ -298,7 +330,7 @@ module CodyRobbins
     end
 
     def new_syllable(onset, nucleus)
-      Syllable.new(@stress,
+      Syllable.new(stress,
                    onset,
                    nucleus)
     end
