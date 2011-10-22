@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require('yaml')
+
 module CodyRobbins
   class Syllabify
     # Create a new syllabified representation of an [IPA](http://en.wikipedia.org/wiki/International_Phonetic_Alphabet) transcription.
@@ -9,7 +11,7 @@ module CodyRobbins
     #
     # @example
     #     transcription = CodyRobbins::Syllabify.new(:en, 'dɪˌsɔrgənəˈze͡ɪʃən')
-    # 
+    #
     #     transcription.to_s      #=> 'dɪ.ˌsɔr.gə.nə.ˈze͡ɪ.ʃən'
     #     transcription.syllables #=> [dɪ, ˌsɔr, gə, nə, ˈze͡ɪ, ʃən]
     def initialize(language, transcription)

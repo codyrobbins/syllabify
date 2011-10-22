@@ -1,4 +1,3 @@
-require('yaml')
 require('active_support/core_ext')
 
 require('cody_robbins/syllabify')
