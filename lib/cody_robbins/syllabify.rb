@@ -90,7 +90,7 @@ module CodyRobbins
     end
 
     def phoneme_inventory
-      HashWithIndifferentAccess.new(phoneme_inventory_yaml)
+      phoneme_inventory_yaml.with_indifferent_access
     end
 
     def phoneme_inventory_yaml
