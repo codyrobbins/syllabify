@@ -6,6 +6,7 @@ consonants:
   - ð
   - f
   - g
+  - ɡ
   - h
   - k
   - l
@@ -56,6 +57,7 @@ onsets:
   - b
   - d
   - g
+  - ɡ
   - f
   - v
   - θ
@@ -78,6 +80,7 @@ onsets:
   - br
   - dr
   - gr
+  - ɡr
   - fr
   - θr
   - ʃr
@@ -85,6 +88,7 @@ onsets:
   - kl
   - bl
   - gl
+  - ɡl
   - fl
   - sl
   - tw
@@ -98,6 +102,7 @@ onsets:
   - sm
   - sn
   - gw
+  - ɡw
   - ʃw
   - spr
   - spl
@@ -118,4 +123,5 @@ onsets:
   - spj
   - skj
   - gj
+  - ɡj
   - hw
